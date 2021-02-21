@@ -2,7 +2,8 @@ import "reflect-metadata";
 import * as express from 'express';
 import * as morgan from 'morgan';
 import * as helmet from 'helmet';
-import {createConnection} from "typeorm";
+import {createConnection, getRepository} from "typeorm";
+import * as bcrypt from 'bcrypt';
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -26,18 +27,26 @@ app.use('/notes', noteRoutes.default);
 //app.use('/note',);
 
 //authentication jwt
-//app.use('/login',);
+//app.use('/auth',);
+
 
 import {User} from "./entity/User";
 createConnection().then(async connection => {
-
-    let user = new User();
-    user.login = "tom";
-    user.password = "mar";
-    user.lastLogin = new Date();
-    user.created = new Date();
-    
-    await connection.manager.save(user);
+    const userTable = getRepository(User);
+    const userExist = await userTable.find({ select: ["login"] });
+    if (!userExist.length){
+      await bcrypt.hash("password", 12, async function(err, hash) {
+        if(!err){
+          let user = new User();
+          user.login = "admin";
+          user.password = hash;
+          user.lastLogin = new Date();
+          await connection.manager.save(user);
+        }
+      
+        return err;
+      }); 
+    }       
 
     app.listen(port, () => {
         console.log(`🎉 START Server on -> http://localhost:${port}`)
