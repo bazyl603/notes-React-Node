@@ -18,7 +18,7 @@ export class User {
     @CreateDateColumn({ type: "date", update: false})
     created!: Date;
 
-    @UpdateDateColumn({ type: "date"})
+    @CreateDateColumn({ type: "date"})
     updatePassword!: Date;
 
 }
