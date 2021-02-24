@@ -1,10 +1,17 @@
 import { Router } from 'express';
+import { body } from 'express-validator';
 
 import * as noteController from '../controllers/notesController';
-import isAyth from '../middleware/is-auth';
+import isAuth from '../middleware/is-auth';
 
-const router = Router();
+const router = Router(); // TODO dodać walidację danych przychodzących
 
-router.get('/', isAyth, noteController.getNotes);
+//GET
+router.get('/', isAuth, noteController.getNotes);
+//POST
+router.post('/', isAuth,
+    [body('description').isString().default('no description').trim(),
+     body('id').notEmpty()
+    ], noteController.createNote);
 
 export default router;

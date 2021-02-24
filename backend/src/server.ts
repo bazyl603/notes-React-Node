@@ -43,7 +43,7 @@ app.use((error: any, req: any, res: any, next: any) => {
 import { startDBValue } from './middleware/startDBValue';
 createConnection().then(async connection => {
     
-    startDBValue(connection);
+    await startDBValue(connection);
 
     app.listen(port, () => {
         console.log(`🎉 START Server on -> http://localhost:${port}` + ' -> time: ' + new Date().toLocaleDateString() + ' / ' + new Date().toTimeString());
