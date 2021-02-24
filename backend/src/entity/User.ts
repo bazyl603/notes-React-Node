@@ -1,4 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from "typeorm";
+import { userInfo } from "os";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany} from "typeorm";
+import {Note} from './Note';
 
 @Entity()
 export class User {
@@ -14,6 +16,9 @@ export class User {
 
     @Column({ type: "date"})
     lastLogin!: Date;
+
+    @OneToMany(() => Note, note => note.user)
+    note!: Note[];
 
     @CreateDateColumn({ type: "date", update: false})
     created!: Date;

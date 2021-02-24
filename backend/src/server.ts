@@ -2,8 +2,7 @@ import "reflect-metadata";
 import * as express from 'express';
 import * as morgan from 'morgan';
 import * as helmet from 'helmet';
-import {createConnection, getRepository} from "typeorm";
-import * as bcrypt from 'bcrypt';
+import {createConnection} from "typeorm";
 import * as bodyParser from 'body-parser';
 
 const app = express();
@@ -41,23 +40,10 @@ app.use((error: any, req: any, res: any, next: any) => {
   res.status(status).json({ message: message, data: data });
 });
 
-import {User} from "./entity/User";
+import { startDBValue } from './middleware/startDBValue';
 createConnection().then(async connection => {
-    const userTable = getRepository(User);
-    const userExist = await userTable.find({ select: ["login"] });
-    if (!userExist.length){
-      await bcrypt.hash("password", 12, async function(err, hash) {
-        if(!err){
-          let user = new User();
-          user.login = "admin";
-          user.password = hash;
-          user.lastLogin = new Date();
-          await connection.manager.save(user);
-        }
-      
-        return err;
-      }); 
-    }       
+    
+    startDBValue(connection);
 
     app.listen(port, () => {
         console.log(`🎉 START Server on -> http://localhost:${port}` + ' -> time: ' + new Date().toLocaleDateString() + ' / ' + new Date().toTimeString());
