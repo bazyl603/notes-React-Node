@@ -1,10 +1,11 @@
 import * as bcrypt from 'bcrypt';
+import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
 
 import {User} from "../entity/User";
 
-export const login = async (req: any, res: any, next: any) => {
+export const login = async (req: Request, res: Response, next: any) => {
 	const login: string = req.body.login;
     const password: string = req.body.password;
 

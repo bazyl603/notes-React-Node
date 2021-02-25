@@ -2,8 +2,9 @@ import { getConnection, getRepository } from 'typeorm';
 import { validationResult } from 'express-validator';
 import { Note } from "../entity/Note";
 import { User } from '../entity/User';
+import { Request, Response } from 'express';
 
-export const getNotes = async (req: any, res: any, next: any) => {
+export const getNotes = async (req: Request, res: Response, next: any) => {
 	const userId: string = req.body.id;
 
 	await getRepository(User).findOne({ select: [ 'id'], where: { id: userId }})
@@ -36,7 +37,7 @@ export const getNotes = async (req: any, res: any, next: any) => {
 	
 }
 
-export const createNote = async (req: any, res: any, next: any) => {
+export const createNote = async (req: Request, res: Response, next: any) => {
 	//const errors = validationResult(req);
 	const errors = validationResult(req);
   	if (!errors.isEmpty()) {
@@ -84,3 +85,5 @@ export const createNote = async (req: any, res: any, next: any) => {
 			next(err);
 		})
 }
+
+export const deleteNote = "elo";
