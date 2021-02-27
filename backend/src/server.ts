@@ -10,29 +10,26 @@ const port = process.env.PORT || 8080;
 
 app.use(morgan('dev'));
 app.use(helmet());
-app.use((req, res, next) => {
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
 	res.setHeader('Access-Control-Allow-Orgin', '*');
-	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
 	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 	next();
 });
 
-import * as noteRoutes from './routes/notesRoutes';
+import * as notesRoutes from './routes/notesRoutes';
 import * as authRoutes from './routes/authRoutes';
 
 app.use(bodyParser.json());
 
 //all notes
-app.use('/notes', noteRoutes.default);
-
-//one note
-//app.use('/note',);
+app.use('/notes', notesRoutes.default);
 
 //authentication jwt
 app.use('/auth', authRoutes.default);
 
 //Error
-app.use((error: any, req: any, res: any, next: any) => {
+app.use((error: any, req: express.Request, res: express.Response, next: any) => {
   console.log(error); //dev, on production delete
   const status = error.statusCode || 500;
   const message = error.message;
