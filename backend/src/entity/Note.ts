@@ -13,7 +13,7 @@ export class Note {
     @CreateDateColumn({ type: "date", update: false})
     created!: Date;
 
-    @CreateDateColumn({ type: "date"})
+    @Column({ type: "timestamp"})
     lastEdit!: Date;
 
     @ManyToOne(() => User, user => user.note)

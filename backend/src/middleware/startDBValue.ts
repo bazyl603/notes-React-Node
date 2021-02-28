@@ -16,6 +16,7 @@ export async function startDBValue(connection: { manager: { save: (arg0: Note | 
         for(let i=0; i<5; i++){
             let note = new Note();
             note.description = `note${i}`;
+            note.lastEdit = new Date();
             arrNotes.push(note);
             await connection.manager.save(note);
         }

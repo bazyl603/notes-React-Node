@@ -22,5 +22,7 @@ router.post('/', isAuth,
 //DELETE -> delete one note /?noteId=...
 router.delete('/', isAuth, [body('userId').notEmpty().isString().trim()], notesController.deleteNote);
 
+//PUT  -> edit one note /?noteId
+router.put('/', isAuth, [body('description').notEmpty().isString().trim(), body('userId').notEmpty().isString().trim()], notesController.editNote);
 
 export default router;
