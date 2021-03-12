@@ -47,7 +47,7 @@ export const login = async (req: Request, res: Response, next: any) => {
                     login: loadedUser.login
                 },
                 'supersecretphrase', {
-                    expiresIn: '2h'
+                    expiresIn: '5h'
                 }
             );
 
@@ -56,7 +56,8 @@ export const login = async (req: Request, res: Response, next: any) => {
             res.status(200).json({
                 token: token,
                 userId: loadedUser.id,
-                toPath: '/notes'
+                toPath: '/notes',
+                expiresTime: '5'
             });
         })
         .catch(err => {
