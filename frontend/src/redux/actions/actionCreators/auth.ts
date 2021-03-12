@@ -36,6 +36,50 @@ export const checkAuthTimeout = (expirationTime: number) => {
     return (dispatch: Dispatch<any>) => {
         setTimeout(() => {
             dispatch(logout());
-        }, 10000);
+        }, expirationTime);
+    }
+}
+
+export const auth = (login: string, password: string, isSignup: boolean) => {    
+    return (dispatch: Dispatch<any>) => {
+        dispatch(authStart());
+        if (!isSignup) {
+            dispatch(logout());
+        }
+        
+        axios.post('http://localhost:8080/auth/login',{
+            login: login,
+            password: password
+        }).then(res=>console.log(res))
+        .catch(err => {
+            dispatch(logout());
+        });
+    }
+};
+
+export const authCheckState = () => {
+    return (dispatch: Dispatch<any>) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            dispatch(logout());
+        } else {
+            const expirationDate = localStorage.getItem('expirationDate');
+            if (expirationDate == null) {
+                dispatch(logout());
+            } else {
+                const expirationDateFix = new Date(expirationDate);
+                if (expirationDateFix <= new Date()) {
+                    dispatch(logout());
+                } else {
+                    const userId = localStorage.getItem('userId');
+                    if (userId == null) {
+                        dispatch(logout());
+                    } else {
+                        dispatch(authSuccess(token, userId));
+                        dispatch(checkAuthTimeout((expirationDateFix.getTime() - new Date().getTime()) ));
+                    }
+                }
+            }
+        }
     }
 }

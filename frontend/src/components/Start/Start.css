@@ -1,0 +1,41 @@
+.Start {
+    text-align: center;
+    height: 75vh;
+    margin: 0 auto;
+    padding-top: 15vh;
+    min-width: 280px;
+    max-width: 50vw;
+}
+
+h1 {
+    margin: 0;
+    color: darkgrey;
+}
+
+i {
+    margin: 10px auto;
+}
+
+button {
+    display: block;
+    margin: 15vh auto 5vh;
+    height: 35px;
+    width: 150px;
+    color: azure;
+    border: none;
+    background-color: cornflowerblue;
+    text-decoration: none;
+}
+
+.buttonLink {    
+    text-decoration: none;
+}
+
+.spanLink {
+    color: grey;
+}
+
+button:hover {
+    color: cornflowerblue;
+    background-color: gainsboro;
+}

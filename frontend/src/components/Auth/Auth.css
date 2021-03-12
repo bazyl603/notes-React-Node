@@ -1,0 +1,50 @@
+.Auth {
+    text-align: center;
+    height: 75vh;
+    margin: 0 auto;
+    padding-top: 15vh;
+    min-width: 280px;
+    max-width: 50vw;
+}
+
+form {
+    text-align: center;
+}
+
+label {
+    display: block;
+}
+
+input {
+    display: block;
+    margin: 3px auto;
+    width: 180px;
+    height: 25px;
+}
+
+button {
+    display: block;
+    margin: 15px auto;
+    height: 35px;
+    width: 100px;
+    color: azure;
+    border: none;
+    background-color: cornflowerblue;
+    text-decoration: none;
+}
+
+button:hover {
+    color: cornflowerblue;
+    background-color: gainsboro;
+}
+
+.errorMessage {
+    display: flex;
+    background-color: rgba(165, 42, 42, 0.219);
+    color: brown;
+    width: 200px;
+    height: 45px;
+    align-items: center;
+    justify-content: center;
+    margin: 5px auto;
+}

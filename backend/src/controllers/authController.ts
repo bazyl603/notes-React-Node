@@ -15,7 +15,7 @@ import {
 export const login = async (req: Request, res: Response, next: any) => {
     const login: string = req.body.login;
     const password: string = req.body.password;
-
+    
     let loadedUser: any;
     await getRepository(User)
         .findOne({

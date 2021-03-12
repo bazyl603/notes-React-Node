@@ -6,6 +6,7 @@ import {
   createConnection
 } from "typeorm";
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -23,7 +24,7 @@ import * as notesRoutes from './routes/notesRoutes';
 import * as authRoutes from './routes/authRoutes';
 
 app.use(bodyParser.json());
-
+app.use(cors());
 //all notes
 app.use('/notes', notesRoutes.default);
 
