@@ -18,7 +18,6 @@ interface FailAction {
     error: string;
     loading: boolean;
     authRedirectPath: string;
-    //TODO add error message
 }
 interface LogoutAction {
     type: AuthTypes.AUTH_LOGOUT;

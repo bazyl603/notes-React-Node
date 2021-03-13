@@ -2,25 +2,26 @@ import './Auth.css';
 import { useActions } from '../hooks/useActions';
 import { useEffect, useState } from 'react';
 import { store } from '../../redux';
-//import { store } from '../../redux';
+//import { useHistory } from 'react-router-dom'; TODO add redirect and fixing error message
 
 const Start: React.FC = (props) => {
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
-    const [isSingup, setSingup] = useState(true);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [login, setLogin] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string | null>('');
+    const [loading, setLoading] = useState(store.getState().auth.loading);
     const { auth } = useActions();
-    
+    //const history = useHistory();
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        auth(login, password, isSingup);
-        setSingup(false);
+        auth(login, password);
+        setErrorMessage(store.getState().auth.error);
+                
     }
 
     let renderContent;
 
-    if( !store.getState().auth.loading ) {
+    if( !loading ) {
         renderContent = (
             <div className="Auth">
                 <h5>Please login!</h5>
@@ -44,10 +45,10 @@ const Start: React.FC = (props) => {
     }    
 
     useEffect(() => {
-        if(!isSingup) {
-            setErrorMessage('user not exist');
+        if (store.getState().auth.loading === false) {
+            setLoading(store.getState().auth.loading);
         }
-    },[isSingup]);  
+    },[loading]);  
     
 
     return (

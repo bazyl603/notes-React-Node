@@ -40,19 +40,23 @@ export const checkAuthTimeout = (expirationTime: number) => {
     }
 }
 
-export const auth = (login: string, password: string, isSignup: boolean) => {    
+export const auth = (login: string, password: string) => {    
     return (dispatch: Dispatch<any>) => {
         dispatch(authStart());
-        if (!isSignup) {
-            dispatch(logout());
-        }
         
         axios.post('http://localhost:8080/auth/login',{
             login: login,
             password: password
-        }).then(res=>console.log(res))
+        }).then(res => {
+            const expirationDate = new Date(new Date().getTime() + res.data.expiresTime * 3600000);
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('expirationDate', JSON.stringify(expirationDate));
+            localStorage.setItem('userId', res.data.userId);
+            dispatch(authSuccess(res.data.token, res.data.userId));
+            dispatch(checkAuthTimeout(res.data.expiresTime * 3600000));
+        })
         .catch(err => {
-            dispatch(logout());
+            dispatch(authFail('bad login or password'));
         });
     }
 };
