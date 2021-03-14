@@ -1,22 +1,22 @@
 import './Auth.css';
 import { useActions } from '../hooks/useActions';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { store } from '../../redux';
-//import { useHistory } from 'react-router-dom'; TODO add redirect and fixing error message
+import { useHistory } from 'react-router-dom'; 
 
 const Start: React.FC = (props) => {
     const [login, setLogin] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [errorMessage, setErrorMessage] = useState<string | null>('');
+    
     const [loading, setLoading] = useState(store.getState().auth.loading);
     const { auth } = useActions();
-    //const history = useHistory();
+    const history = useHistory();
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        auth(login, password);
-        setErrorMessage(store.getState().auth.error);
-                
+        await auth(login, password); 
+        setLoading(store.getState().auth.loading); 
+        history.push('/notes');
     }
 
     let renderContent;
@@ -24,8 +24,7 @@ const Start: React.FC = (props) => {
     if( !loading ) {
         renderContent = (
             <div className="Auth">
-                <h5>Please login!</h5>
-                <div className={errorMessage ? 'errorMessage' : ''}>{errorMessage}</div>            
+                <h5>Please login!</h5>       
                 <form onSubmit={handleSubmit}>
                     <label>login:</label>
                     <input value={login} type="text" placeholder="Login" name="login" onChange={(e) => setLogin(e.target.value)}/>
@@ -42,13 +41,7 @@ const Start: React.FC = (props) => {
                 <h5>Loading...</h5>                    
             </div>
         );
-    }    
-
-    useEffect(() => {
-        if (store.getState().auth.loading === false) {
-            setLoading(store.getState().auth.loading);
-        }
-    },[loading]);  
+    }
     
 
     return (

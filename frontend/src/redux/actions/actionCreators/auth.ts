@@ -65,14 +65,14 @@ export const authCheckState = () => {
     return (dispatch: Dispatch<any>) => {
         const token = localStorage.getItem('token');
         if (!token) {
-            dispatch(logout());
+            dispatch(authFail('missing token'));
         } else {
-            const expirationDate = localStorage.getItem('expirationDate');
+            const expirationDate = localStorage.getItem('expirationDate');            
             if (expirationDate == null) {
-                dispatch(logout());
+                dispatch(authFail('missing time'));
             } else {
-                const expirationDateFix = new Date(expirationDate);
-                if (expirationDateFix <= new Date()) {
+                const dataFix = new Date(Number(expirationDate));
+                if (dataFix <= new Date()) {
                     dispatch(logout());
                 } else {
                     const userId = localStorage.getItem('userId');
@@ -80,7 +80,7 @@ export const authCheckState = () => {
                         dispatch(logout());
                     } else {
                         dispatch(authSuccess(token, userId));
-                        dispatch(checkAuthTimeout((expirationDateFix.getTime() - new Date().getTime()) ));
+                        dispatch(checkAuthTimeout((dataFix.getTime() - new Date().getTime()) ));
                     }
                 }
             }
