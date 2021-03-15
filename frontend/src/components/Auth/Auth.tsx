@@ -1,40 +1,34 @@
 import './Auth.css';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
 import { useActions } from '../hooks/useActions';
-import { useState } from 'react';
-import { store } from '../../redux';
-import { useHistory } from 'react-router-dom'; 
 
-const Start: React.FC = (props) => {
+const Auth: React.FC<any> = (props) => {
     const [login, setLogin] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    
-    const [loading, setLoading] = useState(store.getState().auth.loading);
     const { auth } = useActions();
-    const history = useHistory();
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handlerSubmit = (event: any) => {
         event.preventDefault();
-        await auth(login, password); 
-        setLoading(store.getState().auth.loading); 
-        history.push('/notes');
+        auth(login, password);
     }
 
     let renderContent;
-
-    if( !loading ) {
-        renderContent = (
-            <div className="Auth">
-                <h5>Please login!</h5>       
-                <form onSubmit={handleSubmit}>
-                    <label>login:</label>
-                    <input value={login} type="text" placeholder="Login" name="login" onChange={(e) => setLogin(e.target.value)}/>
-                    <label>password:</label>
-                    <input value={password} type="password" placeholder="Password" name="password" onChange={(e) => setPassword(e.target.value)}/>
-                    <button>Login</button>
-                </form>            
-            </div>
+    renderContent= (
+        <div className="Auth">
+            <h5>Please login!</h5>       
+            <form onSubmit={handlerSubmit}>
+                <label>login:</label>
+                <input value={login} type="text" placeholder="Login" name="login" onChange={(e) => setLogin(e.target.value)}/>
+                <label>password:</label>
+                <input value={password} type="password" placeholder="Password" name="password" onChange={(e) => setPassword(e.target.value)}/>
+                <button>Login</button>
+            </form>            
+        </div>
         );
-    } else {
+
+    if(props.loading){
         renderContent = (
             <div className="Auth">
                 <h4>Please be patient!</h4>  
@@ -42,11 +36,37 @@ const Start: React.FC = (props) => {
             </div>
         );
     }
-    
+
+    let errorMessage
+    if (props.error) {
+        errorMessage = (
+            <div className="errorMessage">
+                {props.error}
+            </div>
+        );
+    }
+
+    let authRedirect = null;
+    if (props.isAuthenticated) {
+        authRedirect = <Redirect to={props.authRedirectPath} />;
+    }
 
     return (
-        renderContent
+    <div className="Auth">
+        {authRedirect}
+        {errorMessage}        
+        {renderContent}
+    </div>
     );
 }
 
-export default Start;
+const mapStateToProps = (state: any) => {
+    return {
+      loading: state.auth.loading,
+      error: state.auth.error,
+      isAuthenticated: state.auth.token !== null,
+      authRedirectPath: state.auth.authRedirectPath
+    };
+  };
+
+export default connect(mapStateToProps)(Auth);
