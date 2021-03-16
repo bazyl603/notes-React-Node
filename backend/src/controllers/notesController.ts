@@ -17,8 +17,14 @@ import {
 } from 'express';
 
 export const getNotes = async (req: Request, res: Response, next: any) => {
-	const userId: string = req.body.id;
-
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		const error: any = new Error('Validation failed, entered data is incorrect');
+		error.statusCode = 422;
+		throw error;
+	}
+	
+	const userId = req.query.userId;
 	await getRepository(User).findOne({
 			select: ['id'],
 			where: {
@@ -68,7 +74,7 @@ export const createNote = async (req: Request, res: Response, next: any) => {
 		throw error;
 	}
 
-	const userId = req.body.id;
+	const userId = req.body.userId;
 	const description = req.body.description;
 
 	await getRepository(User).findOne({

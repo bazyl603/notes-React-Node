@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { AuthTypes } from '../actionTypes/index';
+import { clearNotes, getNotes } from './notes';
 
 export const authStart = () => {
     return {
@@ -36,6 +37,7 @@ export const checkAuthTimeout = (expirationTime: number) => {
     return (dispatch: Dispatch<any>) => {
         setTimeout(() => {
             dispatch(logout());
+            dispatch(clearNotes());
         }, expirationTime);
     }
 }
@@ -66,21 +68,28 @@ export const authCheckState = () => {
         const token = localStorage.getItem('token');
         if (!token) {
             dispatch(logout());
+            dispatch(clearNotes())
         } else {
             const expirationDate = localStorage.getItem('expirationDate');            
             if (!expirationDate) {
                 dispatch(logout());
+                dispatch(clearNotes())
             } else {
                 const dataFix = new Date(JSON.parse(expirationDate));
                 if (dataFix <= new Date()) {
                     dispatch(logout());
+                    dispatch(clearNotes())
                 } else {
                     const userId = localStorage.getItem('userId');
-                    if (userId == null) {
+                    
+                    if (!userId) {
                         dispatch(logout());
+                        dispatch(clearNotes())
                     } else {
                         dispatch(authSuccess(token, userId));
                         dispatch(checkAuthTimeout((dataFix.getTime() - new Date().getTime())));
+                        dispatch(getNotes(token, userId));
+                        console.log(typeof userId);
                     }
                 }
             }

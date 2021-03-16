@@ -1,4 +1,4 @@
-import { AuthTypes } from './actionTypes';
+import { AuthTypes, NotesTypes } from './actionTypes';
 
 interface StartAction {
     type: AuthTypes.AUTH_START;
@@ -29,3 +29,30 @@ interface LogoutAction {
 }
 
 export type AuthAction = StartAction | SuccessAction | FailAction | LogoutAction;
+
+interface LoadingNotes {
+    type: NotesTypes.NOTES_LOADING;
+}
+
+interface SuccessNotes {
+    type: NotesTypes.NOTES_GET_SUCCESS;
+    error: null;
+    loading: boolean;
+    notes: [];
+}
+
+interface FailNotes {
+    type: NotesTypes.NOTES_GET_FAIL;
+    error: string;
+    loading: boolean;
+    notes: null;
+}
+
+interface ClearNotes {
+    type: NotesTypes.NOTES_CLEAR;
+    error: string;
+    loading: boolean;
+    notes: null;
+}
+
+export type NotesAction = LoadingNotes | SuccessNotes | FailNotes | ClearNotes;
