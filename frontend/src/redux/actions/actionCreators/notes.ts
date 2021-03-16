@@ -23,27 +23,26 @@ export const clearNotes = () => {
 
 export const successNotes = (notes: any[]) => {
   return {
-    type: NotesTypes.NOTES_GET_SUCCESS
+    type: NotesTypes.NOTES_GET_SUCCESS,
+    notes: notes
   }
 }
 
 export const getNotes = (token: string, userId: string) => {
   return (dispatch: Dispatch<any>) => {
       dispatch(loadingNotes());
-      console.log(userId);
-      console.log(typeof userId);
+      
       axios.get('http://localhost:8080/notes',{
         headers: {
-          Authorization: `Bearer ${token}`,
-          'x-access-token': token
+          Authorization: `Bearer ${token}`
         },
         params: {
           userId: userId
         }
-      }
-        ).then(res => {
-          console.log(res);
-        }).catch(err => {
+      }).then(res => {
+          const notes = res.data.notes;
+          dispatch(successNotes([...notes]));
+      }).catch(err => {
           dispatch(failNotes(err));
       });
   }

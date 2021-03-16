@@ -1,0 +1,10 @@
+.Notes {
+  width: 95vw;
+  max-width: 600px;
+  min-height: 80vh;
+  margin: 0 auto;
+}
+
+h5 {
+  color: gray;
+}

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { AuthTypes } from '../actionTypes/index';
-import { clearNotes, getNotes } from './notes';
+import { clearNotes, getNotes } from './notes';// TODO naprawić listowanie by robiło się z komponentu
 
 export const authStart = () => {
     return {
@@ -56,6 +56,7 @@ export const auth = (login: string, password: string) => {
             localStorage.setItem('userId', res.data.userId);
             dispatch(authSuccess(res.data.token, res.data.userId));
             dispatch(checkAuthTimeout(res.data.expiresTime * 3600000));
+            dispatch(getNotes(res.data.token, res.data.userId));
         })
         .catch(err => {
             dispatch(authFail('bad login or password'));
@@ -86,10 +87,9 @@ export const authCheckState = () => {
                         dispatch(logout());
                         dispatch(clearNotes())
                     } else {
-                        dispatch(authSuccess(token, userId));
+                        dispatch(authSuccess(token, userId));                        
                         dispatch(checkAuthTimeout((dataFix.getTime() - new Date().getTime())));
                         dispatch(getNotes(token, userId));
-                        console.log(typeof userId);
                     }
                 }
             }
