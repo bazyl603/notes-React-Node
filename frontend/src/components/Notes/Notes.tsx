@@ -1,19 +1,34 @@
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../redux';
 import './Notes.css';
 
 const Notes: React.FC<any> = (props) => {
+    const { getAllNotes } = props;
 
-    let content: any = (<h5>Loading notes ...</h5>);
+    useEffect(() => {
+        if (props.token != null && props.userId != null) {
+            getAllNotes(props.token, props.userId);
+        }        
+    }, [getAllNotes]);
+
+    let content;
+    
+    if (props.loading) {
+        content= (<h5>Loading notes ...</h5>);
+    }    
 
     if (props.error) {
-        content = (<p className="errorMessage">{ props.error }</p>);
+        content = (<p className="errorMessage">{ props.error.message }</p>);
     }
 
-    if (!props.loading) {
-        content = props.notes.map((note: any) => (<div key={note.id}>{ note.id }</div>));
-    }
-    
+    if (props.notes != null) {
+        if (new Array(...props.notes).length > 0) {
+            content = props.notes.map((note: any) => (<div key={note.id}>{ note.id }</div>));
+        } else if (!props.loading) {
+            content= (<h5>Please create notes </h5>);
+        }
+    }    
 
     return (
         <div className="Notes">

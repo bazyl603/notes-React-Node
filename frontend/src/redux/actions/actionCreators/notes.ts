@@ -41,7 +41,7 @@ export const getNotes = (token: string, userId: string) => {
         }
       }).then(res => {
           const notes = res.data.notes;
-          dispatch(successNotes([...notes]));
+          dispatch(successNotes(notes));
       }).catch(err => {
           dispatch(failNotes(err));
       });
