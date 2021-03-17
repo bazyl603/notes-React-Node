@@ -15,7 +15,7 @@ router.get('/', isAuth, notesController.getNotes);
 
 //POST -> create note
 router.post('/', isAuth,
-    [body('description').isString().default('no description').trim(),
+    [body('description').isString(),
         body('userId').notEmpty().isString().trim()
     ], notesController.createNote);
 

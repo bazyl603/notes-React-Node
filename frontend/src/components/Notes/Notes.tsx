@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../redux';
+import OneNotes from './OneNote/OneNote';
 import './Notes.css';
 
 const Notes: React.FC<any> = (props) => {
@@ -24,7 +25,7 @@ const Notes: React.FC<any> = (props) => {
 
     if (props.notes != null) {
         if (new Array(...props.notes).length > 0) {
-            content = props.notes.map((note: any) => (<div key={note.id}>{ note.id }</div>));
+            content = props.notes.map((note: any) => (<OneNotes key={note.id} date={Date.parse(note.lastEdit)} description={note.description} click={() => console.log('click button')}></OneNotes>));
         } else if (!props.loading) {
             content= (<h5>Please create notes </h5>);
         }

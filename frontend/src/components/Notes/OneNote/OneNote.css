@@ -1,0 +1,45 @@
+.Note {
+  width: 47%;
+  height: 20vh;
+  background-color: gainsboro;
+  margin: 10px auto;
+  padding-bottom: 15px;
+}
+
+.editDate {
+  margin: 0;
+  padding-left: 8px;
+  display: inline-block;
+  width: 75%;
+  color: gray;
+  text-align: left;
+  font-size: 11px;
+}
+
+.deleteButton {
+  margin: 0;
+  padding: 0;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: 20%;
+  color: cornflowerblue;
+  display: inline-block;
+  background-color: gainsboro;
+  border-radius: 50px;
+}
+
+.description {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
+  text-align: justify;
+  margin: 0 15px;
+}
+
+@media (max-width: 650px) {
+  .Note {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+}

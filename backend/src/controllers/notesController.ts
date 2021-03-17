@@ -76,7 +76,6 @@ export const createNote = async (req: Request, res: Response, next: any) => {
 
 	const userId = req.body.userId;
 	const description = req.body.description;
-
 	await getRepository(User).findOne({
 			select: ['id'],
 			where: {
@@ -97,16 +96,18 @@ export const createNote = async (req: Request, res: Response, next: any) => {
 					.into(Note)
 					.values([{
 						description: description,
-						user: userId
+						user: userId,
+						lastEdit: new Date()
 					}])
 					.execute();
-
+					
 				return res.status(201).json({
 					message: "Succes!",
 					toPath: '/notes'
 				});
 
 			} catch (err) {
+				console.log(err);
 				const error: any = new Error(`Don't save note`);
 				error.statusCode = 500;
 				throw error;
