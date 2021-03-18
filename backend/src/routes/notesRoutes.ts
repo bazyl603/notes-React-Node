@@ -10,7 +10,7 @@ import isAuth from '../middleware/is-auth';
 
 const router = Router();
 
-//GET -> all notes
+//GET -> all notes /?userId=...
 router.get('/', isAuth, notesController.getNotes);
 
 //POST -> create note
@@ -19,8 +19,8 @@ router.post('/', isAuth,
         body('userId').notEmpty().isString().trim()
     ], notesController.createNote);
 
-//DELETE -> delete one note /?noteId=...
-router.delete('/', isAuth, [body('userId').notEmpty().isString().trim()], notesController.deleteNote);
+//DELETE -> delete one note /?noteId=&userId...
+router.delete('/', isAuth, notesController.deleteNote);
 
 //PUT  -> edit one note /?noteId
 router.put('/', isAuth, [body('description').notEmpty().isString().trim(), body('userId').notEmpty().isString().trim()], notesController.editNote);

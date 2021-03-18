@@ -47,3 +47,24 @@ export const getNotes = (token: string, userId: string) => {
       });
   }
 }
+
+export const deleteNote = (token: string, userId: string, noteId: string) => {
+  return (dispatch: Dispatch<any>) => {
+    dispatch(loadingNotes());
+
+    axios.delete('http://localhost:8080/notes',{
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          noteId: noteId,
+          userId: userId
+        }
+      }).then(res => {
+          dispatch(getNotes(token, userId));
+      }).catch(err => {
+          dispatch(failNotes(err));
+      });
+
+  }
+}

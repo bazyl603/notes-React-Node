@@ -3,15 +3,17 @@
   max-width: 600px;
   min-height: 80vh;
   margin: 0 auto;
-  margin-bottom: 150px;
+  margin-bottom: 80px;
   padding-top: 15px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 h5 {
   color: gray;
+  margin: 0 auto;
 }
 
 .errorMessage {

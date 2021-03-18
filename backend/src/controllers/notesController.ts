@@ -124,15 +124,15 @@ export const createNote = async (req: Request, res: Response, next: any) => {
 };
 
 export const deleteNote = async (req: Request, res: Response, next: any) => {
-	const errors = validationResult(req);
-	if (!errors.isEmpty()) {
-		const error: any = new Error('Validation failed, entered data is incorrect');
-		error.statusCode = 422;
-		throw error;
-	}
+	// const errors = validationResult(req);
+	// if (!errors.isEmpty()) {
+	// 	const error: any = new Error('Validation failed, entered data is incorrect');
+	// 	error.statusCode = 422;
+	// 	throw error;
+	// }
 
 	const noteId = req.query.noteId;
-	const userId = req.body.userId;
+	const userId = req.query.userId;
 	await getRepository(Note).findOne({
 			select: ['id', 'user'],
 			where: {

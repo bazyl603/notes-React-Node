@@ -4,6 +4,7 @@
   background-color: gainsboro;
   margin: 10px auto;
   padding-bottom: 15px;
+  z-index: 0;
 }
 
 .editDate {

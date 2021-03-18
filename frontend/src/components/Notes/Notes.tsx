@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../redux';
 import OneNotes from './OneNote/OneNote';
+import Nav from './Nav/Nav';
 import './Notes.css';
 
 const Notes: React.FC<any> = (props) => {
-    const { getAllNotes } = props;
+    const { getAllNotes, logout, clearNotes, deleteNote } = props;
 
     useEffect(() => {
         if (props.token != null && props.userId != null) {
@@ -25,15 +26,28 @@ const Notes: React.FC<any> = (props) => {
 
     if (props.notes != null) {
         if (new Array(...props.notes).length > 0) {
-            content = props.notes.map((note: any) => (<OneNotes key={note.id} date={Date.parse(note.lastEdit)} description={note.description} click={() => console.log('click button')}></OneNotes>));
+            content = props.notes.map((note: any) => (<OneNotes key={note.id} 
+                    date={Date.parse(note.lastEdit)} 
+                    description={note.description} 
+                    deleteBtn={() => deleteNote(props.token, props.userId, note.id)}>
+                </OneNotes>));
         } else if (!props.loading) {
             content= (<h5>Please create notes </h5>);
         }
-    }    
+    }  
+
+    const logoutFn = () => {
+        clearNotes();
+        logout();
+    }
 
     return (
         <div className="Notes">
-            { content }
+            <Nav addNotesRedirect={() => {console.log('addNote')}}
+                logout={logoutFn}
+                chengePassword={() => {console.log('changePassword')}}
+            />
+            { content }            
         </div>
     );
 };
@@ -51,7 +65,10 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-      getAllNotes: (token: string, userId: string) => dispatch(actionCreators.getNotes(token, userId))       
+      getAllNotes: (token: string, userId: string) => dispatch(actionCreators.getNotes(token, userId)),
+      logout: () => dispatch(actionCreators.logout()),
+      clearNotes: () => dispatch(actionCreators.clearNotes()),
+      deleteNote: (token: string, userId: string, noteId: string) => dispatch(actionCreators.deleteNote(token, userId, noteId))      
     };
 };
 
