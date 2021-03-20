@@ -7,6 +7,7 @@ import { actionCreators } from '../redux';
 const Start = React.lazy(() => import('./Start/Start'));
 const Auth = React.lazy(() => import('./Auth/Auth'));
 const Notes = React.lazy(() => import('./Notes/Notes'));
+const NoteForm = React.lazy(() => import('./NoteForm/NoteForm'));
 
 const App: React.FC<any> = (props) => {
   const { onTryAutoSignup } = props;
@@ -26,7 +27,8 @@ const App: React.FC<any> = (props) => {
   if (props.isAuthenticated) {
     routes = (      
       <Switch>
-        <Route path="/auth" render={props => <Auth {...props} />} /> 
+        <Route path="/auth" render={props => <Auth {...props} />} />
+        <Route path="/note" render={props => <NoteForm {...props} />} /> 
         <Route path="/" exact render={props => <Notes {...props} />} />                 
         <Redirect to="/" />
       </Switch>

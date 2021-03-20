@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import { actionCreators } from '../../redux';
 import OneNotes from './OneNote/OneNote';
 import Nav from './Nav/Nav';
@@ -7,6 +8,8 @@ import './Notes.css';
 
 const Notes: React.FC<any> = (props) => {
     const { getAllNotes, logout, clearNotes, deleteNote } = props;
+
+    const history = useHistory();
 
     useEffect(() => {
         if (props.token != null && props.userId != null) {
@@ -43,7 +46,7 @@ const Notes: React.FC<any> = (props) => {
 
     return (
         <div className="Notes">
-            <Nav addNotesRedirect={() => {console.log('addNote')}}
+            <Nav addNotesRedirect={() => history.push("/note", { from: "/" })}
                 logout={logoutFn}
                 chengePassword={() => {console.log('changePassword')}}
             />
