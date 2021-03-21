@@ -7,7 +7,7 @@ import Nav from './Nav/Nav';
 import './Notes.css';
 
 const Notes: React.FC<any> = (props) => {
-    const { getAllNotes, logout, clearNotes, deleteNote } = props;
+    const { getAllNotes, logout, clearNotes, deleteNote, curentNote } = props;
 
     const history = useHistory();
 
@@ -32,7 +32,11 @@ const Notes: React.FC<any> = (props) => {
             content = props.notes.map((note: any) => (<OneNotes key={note.id} 
                     date={Date.parse(note.lastEdit)} 
                     description={note.description} 
-                    deleteBtn={() => deleteNote(props.token, props.userId, note.id)}>
+                    deleteBtn={(e: any) => {
+                        deleteNote(props.token, props.userId, note.id);}}
+                    click={() => {
+                        curentNote(note.description, note.id, note.created, note.lsatEdit); 
+                        history.push("/note", { from: "/" })} }>
                 </OneNotes>));
         } else if (!props.loading) {
             content= (<h5>Please create notes </h5>);
@@ -71,7 +75,8 @@ const mapDispatchToProps = (dispatch: any) => {
       getAllNotes: (token: string, userId: string) => dispatch(actionCreators.getNotes(token, userId)),
       logout: () => dispatch(actionCreators.logout()),
       clearNotes: () => dispatch(actionCreators.clearNotes()),
-      deleteNote: (token: string, userId: string, noteId: string) => dispatch(actionCreators.deleteNote(token, userId, noteId))      
+      deleteNote: (token: string, userId: string, noteId: string) => dispatch(actionCreators.deleteNote(token, userId, noteId)),
+      curentNote: (description: string, id: string, created: string, lastEdit: string) => dispatch(actionCreators.setNote(description, id, created, lastEdit))      
     };
 };
 

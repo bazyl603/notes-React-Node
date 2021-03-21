@@ -103,7 +103,7 @@ export const createNote = async (req: Request, res: Response, next: any) => {
 					
 				return res.status(201).json({
 					message: "Succes!",
-					toPath: '/notes'
+					toPath: '/notes',
 				});
 
 			} catch (err) {

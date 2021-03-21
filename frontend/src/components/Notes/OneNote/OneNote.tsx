@@ -3,7 +3,8 @@ import './OneNote.css';
 interface NoteProps {
   date: number,
   description: string,
-  deleteBtn: any
+  deleteBtn: any,
+  click: any
 }
 
 const OneNote: React.FC<NoteProps> = (props) => {
@@ -13,7 +14,7 @@ const OneNote: React.FC<NoteProps> = (props) => {
       <div className="Note">
           <p className="editDate">{date}</p>
           <button className="deleteButton" onClick={props.deleteBtn}><i className="fas fa-trash"></i></button>
-          <div className="description">{description}</div>       
+          <div className="description" onClick={props.click}>{description}</div>       
       </div>
   );
 };

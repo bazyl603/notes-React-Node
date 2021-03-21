@@ -1,4 +1,4 @@
-import { AuthTypes, NotesTypes } from './actionTypes';
+import { AuthTypes, NotesTypes, NoteTypes } from './actionTypes';
 
 interface StartAction {
     type: AuthTypes.AUTH_START;
@@ -56,3 +56,33 @@ interface ClearNotes {
 }
 
 export type NotesAction = LoadingNotes | SuccessNotes | FailNotes | ClearNotes;
+
+interface LoadingNote {
+    type: NoteTypes.NOTE_LOADING;
+}
+
+interface SetNote {
+    type: NoteTypes.NOTE_SET;
+    description: string;
+    id: string;
+    created: string;
+    lastEdit: string;
+}
+
+interface FailNote {
+    type: NoteTypes.NOTE_FAIL;
+    description: string;
+    id: string;
+    created: string;
+    lastEdit: string;
+}
+
+interface ClearNote {
+    type: NoteTypes.NOTE_CLEAR;
+    description: string;
+    id: string;
+    created: string;
+    lastEdit: string;
+}
+
+export type NoteAction = LoadingNote | SetNote | FailNote | ClearNote;

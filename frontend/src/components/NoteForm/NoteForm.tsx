@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from "react-router-dom";
+import { actionCreators } from '../../redux';
 import './NoteForm.css';
 
 const NoteForm: React.FC<any> = (props) => {
-  const [description, setDescription] = useState<string>('');
+  const [description, setDescription] = useState<string>(props.description);
   const [saveToggler, setSaveToggler] = useState<boolean>(false);
   const [saveORback, setsaveORback] = useState<any>('save');
   const [colorBtn, setColorBtn] = useState<any>({background: 'brown'});
   const [changeCheck, setChangeCheck] = useState<boolean>(true);
+
+  const { createNote, clearNote } = props;
 
   const history = useHistory();
 
@@ -19,29 +22,32 @@ const NoteForm: React.FC<any> = (props) => {
     } else {
       setsaveORback('save');
     }
-
-    if (saveToggler === false && changeCheck === true) {
-     let timeSave = setTimeout(() => {
-        setSaveToggler(true);
-        setColorBtn({background: 'green'});
-        setChangeCheck(false);
-        console.log('save time');
-      }, 5000); //TODO add send change note on server
-
-      return () => {
-        clearTimeout(timeSave);
-      };
-    }
   }, [saveToggler, changeCheck]);
-  
+
+  let createData = props.created;
+  if (!props.created){
+    createData = new Date().toLocaleDateString();
+  } 
+
+  let lastEditData = props.lastEdit;
+  if (!props.created){
+    lastEditData = new Date().toLocaleString();
+  }   
 
   const handlerSubmit = (event: any) => {
     event.preventDefault();
     console.log("save");
 
+    
+    if (saveToggler === false && !props.noteId) {
+      createNote(props.userId, props.token, description, createData, lastEditData);
+    }
+
     setSaveToggler(true);
     setChangeCheck(false);
-    if (saveToggler === true) {      
+
+    if (saveToggler === true) { 
+      clearNote();     
       history.push("/", { from: "/note" });
     }
   }
@@ -55,14 +61,13 @@ const NoteForm: React.FC<any> = (props) => {
       setChangeCheck(true);
     }    
   }
-
     return (
         <div className="NoteForm">
-          <p>Created: 00-00-0000 / Last edit: 00-00-0000 00:00</p>
+          <p>Created: {createData} / Last edit: {lastEditData}</p>
               <textarea value={description} name="description" onChange={textChange}/>
               <div className="NoteBarr">
                 <button className="saveORback" style={colorBtn} onClick={handlerSubmit}>{saveORback}</button>
-                <p>save before you go back!</p>
+                <p>{saveToggler ? 'saved' : 'save before go back'}</p>
               </div>     
         </div>
     );
@@ -70,12 +75,21 @@ const NoteForm: React.FC<any> = (props) => {
 
 const mapStateToProps = (state: any) => {
     return {
+      loading: state.note.loading,
+      isAuthenticated: state.auth.token,
+      token: state.auth.token,
+      userId: state.auth.userId,
+      description: state.note.description,
+      noteId: state.note.id,
+      created: state.note.created,
+      lastEdit: state.note.lastEdit
     };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-
+      createNote: (userId: string, token: string, description: string, created:  string, lastEdit: string) => dispatch(actionCreators.createNote(userId, token, description, created, lastEdit)),
+      clearNote: () => dispatch(actionCreators.clearNote())
     };
 };
 

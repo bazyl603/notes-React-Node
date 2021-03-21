@@ -13,3 +13,10 @@ export enum NotesTypes {
     NOTES_GET_FAIL = 'NOTES_GET_FAIL',
     NOTES_CLEAR = 'NOTES_CLEAR'
 }
+
+export enum NoteTypes {
+    NOTE_LOADING = 'NOTE_LOADING',
+    NOTE_SET = 'NOTE_SET',
+    NOTE_FAIL = 'NOTE_FAIL',
+    NOTE_CLEAR = 'NOTE_CLEAR'
+}
