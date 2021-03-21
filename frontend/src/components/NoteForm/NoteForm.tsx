@@ -21,12 +21,16 @@ const NoteForm: React.FC<any> = (props) => {
     }
 
     if (saveToggler === false && changeCheck === true) {
-      setTimeout(() => {
+     let timeSave = setTimeout(() => {
         setSaveToggler(true);
         setColorBtn({background: 'green'});
         setChangeCheck(false);
         console.log('save time');
       }, 5000); //TODO add send change note on server
+
+      return () => {
+        clearTimeout(timeSave);
+      };
     }
   }, [saveToggler, changeCheck]);
   
@@ -48,9 +52,8 @@ const NoteForm: React.FC<any> = (props) => {
     if (saveToggler === true) {
       setSaveToggler(false);
       setColorBtn({background: 'brown'});
-      
-    }
-    setChangeCheck(true);
+      setChangeCheck(true);
+    }    
   }
 
     return (
