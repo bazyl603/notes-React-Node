@@ -100,10 +100,19 @@ export const createNote = async (req: Request, res: Response, next: any) => {
 						lastEdit: new Date()
 					}])
 					.execute();
+
+				const noteId = await getRepository(Note).findOne({
+						select: ['id'],
+						where: {
+							description: description,
+							user: userId,
+						}
+					})
 					
 				return res.status(201).json({
 					message: "Succes!",
 					toPath: '/notes',
+					noteId: noteId
 				});
 
 			} catch (err) {

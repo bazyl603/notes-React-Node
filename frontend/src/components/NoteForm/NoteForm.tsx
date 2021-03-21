@@ -24,23 +24,26 @@ const NoteForm: React.FC<any> = (props) => {
     }
   }, [saveToggler, changeCheck]);
 
-  let createData = props.created;
+  let createData = new Date(props.created).toLocaleDateString();
   if (!props.created){
     createData = new Date().toLocaleDateString();
   } 
 
-  let lastEditData = props.lastEdit;
+  let lastEditData = new Date(props.lastEdit).toLocaleString();
   if (!props.created){
     lastEditData = new Date().toLocaleString();
   }   
 
   const handlerSubmit = (event: any) => {
     event.preventDefault();
-    console.log("save");
-
     
     if (saveToggler === false && !props.noteId) {
-      createNote(props.userId, props.token, description, createData, lastEditData);
+      createNote(props.userId, props.token, description, props.created, props.lastEdit);
+      console.log("save");
+    }
+
+    if (saveToggler === false && props.noteId) {
+      console.log("edit");
     }
 
     setSaveToggler(true);
@@ -76,7 +79,6 @@ const NoteForm: React.FC<any> = (props) => {
 const mapStateToProps = (state: any) => {
     return {
       loading: state.note.loading,
-      isAuthenticated: state.auth.token,
       token: state.auth.token,
       userId: state.auth.userId,
       description: state.note.description,

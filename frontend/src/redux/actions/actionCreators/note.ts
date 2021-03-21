@@ -42,8 +42,7 @@ export const createNote = (userId: string, token: string, description: string, c
           Authorization: `Bearer ${token}`
         }
       }).then(res => {
-          dispatch(setNote(description, res.data.noteId, created, lastEdit));
-          console.log(res);
+          dispatch(setNote(description, res.data.noteId.id, created, lastEdit));
       }).catch(err => {
           dispatch(failNote(err));
       });

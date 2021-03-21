@@ -35,7 +35,7 @@ const Notes: React.FC<any> = (props) => {
                     deleteBtn={(e: any) => {
                         deleteNote(props.token, props.userId, note.id);}}
                     click={() => {
-                        curentNote(note.description, note.id, note.created, note.lsatEdit); 
+                        curentNote(note.description, note.id, note.created, note.lastEdit); 
                         history.push("/note", { from: "/" })} }>
                 </OneNotes>));
         } else if (!props.loading) {
