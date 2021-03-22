@@ -11,7 +11,7 @@ const NoteForm: React.FC<any> = (props) => {
   const [colorBtn, setColorBtn] = useState<any>({background: 'brown'});
   const [changeCheck, setChangeCheck] = useState<boolean>(true);
 
-  const { createNote, clearNote } = props;
+  const { createNote, clearNote, editNote } = props;
 
   const history = useHistory();
 
@@ -43,6 +43,7 @@ const NoteForm: React.FC<any> = (props) => {
     }
 
     if (saveToggler === false && props.noteId) {
+      editNote(props.userId, props.token, props.noteId, description, props.created, props.lastEdit);
       console.log("edit");
     }
 
@@ -91,7 +92,8 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
       createNote: (userId: string, token: string, description: string, created:  string, lastEdit: string) => dispatch(actionCreators.createNote(userId, token, description, created, lastEdit)),
-      clearNote: () => dispatch(actionCreators.clearNote())
+      clearNote: () => dispatch(actionCreators.clearNote()),
+      editNote: (userId: string, token: string, noteId: string, description: string, created:  string, lastEdit: string) => dispatch(actionCreators.editNote(userId, token, noteId, description, created, lastEdit))
     };
 };
 

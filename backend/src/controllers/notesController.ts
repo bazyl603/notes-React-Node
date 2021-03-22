@@ -230,7 +230,8 @@ export const editNote = async (req: Request, res: Response, next: any) => {
 
 				return res.status(200).json({
 					message: "Edit succes!",
-					toPath: `/notes/?noteId=${noteId}`
+					toPath: `/notes/?noteId=${noteId}`,
+					noteId: noteId
 				});
 			} catch (err) {
 				const error: any = new Error(`Don't edit-save note`);

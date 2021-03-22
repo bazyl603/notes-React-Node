@@ -46,6 +46,27 @@ export const createNote = (userId: string, token: string, description: string, c
       }).catch(err => {
           dispatch(failNote(err));
       });
+  }
+}
 
+export const editNote = (userId: string, token: string, noteId: string, description: string, created:  string, lastEdit: string) => {
+  return (dispatch: Dispatch<any>) => {
+    dispatch(loadingNote());
+
+    axios.put('http://localhost:8080/notes', {
+      userId: userId,
+      description: description
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: {
+        noteId: noteId
+      }
+    }).then(res => {
+      dispatch(setNote(description, res.data.noteId.id, created, lastEdit));
+  }).catch(err => {
+      dispatch(failNote(err));
+  });
   }
 }
